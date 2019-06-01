@@ -47,17 +47,17 @@ public abstract class Pile : MonoBehaviour
 
     }
 
-    private void DisableCollider(GameObject obj)
+    protected void DisableCollider(GameObject obj)
     {
         obj.gameObject.transform.GetChild(0).GetComponent<BoxCollider>().enabled = false;
     }
 
-    private void EnableCollider(GameObject obj)
+    protected void EnableCollider(GameObject obj)
     {
         obj.gameObject.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
     }
 
-    private void EnableLastCardCollider()
+    protected void EnableLastCardCollider()
     {
         Debug.Log("Enabling new card collider...");
         if (_CardsInPile.Count>0)
@@ -66,8 +66,14 @@ public abstract class Pile : MonoBehaviour
         }
     }
 
-    private void RemoveCardFromList(GameObject cardToRemove){
+    protected void RemoveCardFromList(GameObject cardToRemove){
         Debug.Log("Removing from old pile...");
         _CardsInPile.Remove(cardToRemove);
+    }
+    //used to check winning condition
+    public int GetLastValueCard(){
+        if (_CardsInPile.Count == 0)return 0;
+        int val = _CardsInPile[_CardsInPile.Count -1].GetComponent<CardBehaviour>().Getcard().value;
+        return val;
     }
 }

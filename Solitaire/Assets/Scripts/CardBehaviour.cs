@@ -88,24 +88,28 @@ public bool clicked = false;
         //get the board section in order to call the metod that checks if the movement is valid
            
             BoardSection bs = _MyMagnet.GetComponent<Magnet>().GetBoardSection();
-            GameObject otherCardPileManager = _MyMagnet.GetComponent<Magnet>().GetOtherCardPileManager();
+            GameObject otherCardPileManager = null;
+            otherCardPileManager = _MyMagnet.GetComponent<Magnet>().GetOtherCardPileManager();
 
              bool validMovement=false;
-            switch (bs)
-            {
-                case BoardSection.Foundation:
-                    otherCardPileManager.GetComponent<FoundationBehaviour>().SetCardToPlace(card);
-                     validMovement = otherCardPileManager.GetComponent<FoundationBehaviour>().CheckValidMovement();
-                break;
-                case BoardSection.OpenCell:
-                     validMovement = otherCardPileManager.GetComponent<OpenCellBehaviour>().CheckValidMovement();
-                break;
-                case BoardSection.Tableau:
-                    validMovement = otherCardPileManager.GetComponent<TableauBehaviour>().CheckValidMovement();
-                break;
-                default:
-                break;
-            }
+             if (otherCardPileManager != null)
+             {                 
+                switch (bs)
+                {
+                    case BoardSection.Foundation:
+                        otherCardPileManager.GetComponent<FoundationBehaviour>().SetCardToPlace(card);
+                        validMovement = otherCardPileManager.GetComponent<FoundationBehaviour>().CheckValidMovement();
+                    break;
+                    case BoardSection.OpenCell:
+                        validMovement = otherCardPileManager.GetComponent<OpenCellBehaviour>().CheckValidMovement();
+                    break;
+                    case BoardSection.Tableau:
+                        validMovement = otherCardPileManager.GetComponent<TableauBehaviour>().CheckValidMovement();
+                    break;
+                    default:
+                    break;
+                }
+             }
            if (validMovement) ChangeCardOfPile(otherCardPileManager);
            else ResetPosition();
 
