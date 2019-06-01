@@ -19,7 +19,7 @@ public abstract class Pile : MonoBehaviour
         }else{
             Transform parentTransform = _CardsInPile[_CardsInPile.Count-1].transform;
             card.transform.SetParent(parentTransform);
-            card.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y-0.5f, parentTransform.position.z-0.03f);
+            card.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y-0.25f, parentTransform.position.z-0.03f);
 
             //disabe colider of the last card
             DisableCollider( _CardsInPile[_CardsInPile.Count-1]);

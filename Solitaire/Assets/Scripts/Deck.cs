@@ -80,7 +80,7 @@ public class Deck : MonoBehaviour
     {
          GameObject tmpCard;
          float yoffset=0f;
-         float zoffset=0.03f;
+         float zoffset=0.01f;
          int CardsPerPillar = 7;
          int index=0;
         //place the cards on each pillar
@@ -88,7 +88,7 @@ public class Deck : MonoBehaviour
         {
             if (i ==4)CardsPerPillar=6;
             yoffset = 0;
-            zoffset=0.03f;
+            zoffset=0.01f;
             for (int j = 0; j < CardsPerPillar; j++)
             {                
                 //instantiate card
@@ -100,7 +100,7 @@ public class Deck : MonoBehaviour
                 _Tableau[i].GetComponent<TableauBehaviour>().AddCardToPilar(tmpCard);
 
                //Update loop variables
-                yoffset+=0.5f;
+                yoffset+=0.1f;
                 zoffset+=0.03f;
                 index++;
             }

@@ -92,7 +92,8 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
             switch (bs)
             {
                 case BoardSection.Foundation:
-                //otherCardPileManager.GetComponent<>
+                    otherCardPileManager.GetComponent<FoundationBehaviour>().SetCardToPlace(card);
+                     validMovement = otherCardPileManager.GetComponent<FoundationBehaviour>().CheckValidMovement();
                 break;
                 case BoardSection.OpenCell:
                      validMovement = otherCardPileManager.GetComponent<OpenCellBehaviour>().CheckValidMovement();
@@ -104,14 +105,19 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
                 break;
             }
            if (validMovement) ChangeCardOfPile(otherCardPileManager);
+           else ResetPosition();
 
         }else{ // the player dropped the card on an empty space. didnt put the card on top of any other card.
         //return the card back to its original pile
-             Transform parentTransform = this.gameObject.transform.parent;
-             float yoffset=0.5f;
-            if(this.gameObject.transform.parent.name.Contains("oc")) yoffset = 0;
-             this.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y - yoffset, parentTransform.position.z-0.03f);
+            ResetPosition();
         }
+    }
+
+    private void ResetPosition(){
+         Transform parentTransform = this.gameObject.transform.parent;
+            float yoffset=0.3f;
+            if(this.gameObject.transform.parent.name.Contains("oc")) yoffset = 0;
+            this.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y - yoffset, parentTransform.position.z-0.03f);
     }
 
     private void ChangeCardOfPile(GameObject otherCardPileManager)
