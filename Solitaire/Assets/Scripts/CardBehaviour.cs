@@ -14,6 +14,10 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
     [SerializeField] private bool _moving = false;
     private Deck deck;
     private float AuxiliaryZIndex;
+    //this flag was created for the case when the player wants to drag multiple cards at a time
+    // they are draggable if this flag is up. 
+    //Always checking if it is draggale on update
+    [SerializeField] private bool _IsDraggable = true;
 
     void Start(){
         _MyMagnet = this.gameObject.transform.GetChild(0).gameObject;
@@ -27,15 +31,41 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
         //render card image
         spriteR.sprite = card.cardImage;
     }
+    //TODO pass all this to the Tableau behaviour class
+    private void Update()
+    {
+        //iterate through all the children of the card ---> while child(0) != null
+
+        //GameObject child = null;
+        //Debug.Log( this.gameObject.transform.GetChild(1).gameObject);
+        Transform trans = transform;
+        if (trans.childCount == 1) _IsDraggable=true;
+
+        while (trans.childCount >1)
+        {   
+
+            Card childCard = trans.GetChild(1).GetComponent<CardBehaviour>().Getcard();
+            // You can move the top card of a pile on the Tableau onto another Tableau pile, if that pile's top card is one higher than the moved card and in a different color. 
+            if ( !(card.value == (childCard.value +1)) ){ // || the color is equal
+                    _IsDraggable = false;
+            }
+            trans = trans.GetChild(1);
+        }
+
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-       // Debug.Log("ON BEING DRAG");
+        if(!_IsDraggable) return;
+
+        Debug.Log("ON BEING DRAG");
         AuxiliaryZIndex = transform.position.z;
+        Debug.Log(eventData.pointerEnter);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+         if(!_IsDraggable) return;
         // Debug.Log("ON DRAG");
         float distance = 10f;
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
@@ -45,7 +75,7 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("ON END DRAG");
+         if(!_IsDraggable) return;
         transform.position = new Vector3(transform.position.x, transform.position.y, AuxiliaryZIndex);
          GameObject otherCardCollider = _MyMagnet.GetComponent<Magnet>().GetOtherCardCollider();
          if (otherCardCollider != null)

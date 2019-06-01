@@ -5,18 +5,7 @@ using UnityEngine;
 
 public abstract class Pile : MonoBehaviour
 {
-    [SerializeField] public List<GameObject> _CardsInPile = new List<GameObject>();
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] protected List<GameObject> _CardsInPile = new List<GameObject>();
 
     public void AddCardToPilar(GameObject card){
         //Only the cards at the bottom of each pile can allow other cards to join that pile.
