@@ -24,15 +24,6 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
         spriteR.sprite = card.cardImage;
     }
 
-    //  void OnMouseDrag()
-    // {
-    //     Debug.Log("DRAG");
-    //     float distance = 10f;
-    //     Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
-    //     Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-    //     transform.position = objPosition;
-    // }
-
     private void OnMouseDown()
     {
         
@@ -47,20 +38,18 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-         Debug.Log("ON DRAG");
-         //this.transform.position += (Vector3)eventData.position;
-                float distance = 10f;
+        // Debug.Log("ON DRAG");
+        float distance = 10f;
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         transform.position = new Vector3(objPosition.x, objPosition.y, -0.3f);
-        
-        //throw new System.NotImplementedException();
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         Debug.Log("ON END DRAG");
         transform.position = new Vector3(transform.position.x, transform.position.y, AuxiliaryZIndex);
-       // throw new System.NotImplementedException();
     }
+
+
 }

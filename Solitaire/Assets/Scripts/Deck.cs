@@ -83,9 +83,15 @@ public class Deck : MonoBehaviour
             zoffset=0.03f;
             for (int j = 0; j < CardsPerPillar; j++)
             {                
+                //instantiate card
                 tmpCard =Instantiate(_CardDummy, new Vector3(_Tableau[i].transform.position.x, _Tableau[i].transform.position.y - yoffset,  _Tableau[i].transform.position.z - zoffset), Quaternion.identity);//_Tableau[i].transform.position.x, _Tableau[i].transform.position.y+2,  _Tableau[i].transform.position.z) );
                 tmpCard.name = _Deck[index].cardImageName;
                tmpCard.GetComponent<CardBehaviour>().Instantiate(index);
+
+                //Add to pile
+                _Tableau[i].GetComponent<TableauBehaviour>().AddCardToPilar(tmpCard);
+
+               //Update loop variables
                 yoffset+=0.5f;
                 zoffset+=0.03f;
                 index++;
