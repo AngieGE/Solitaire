@@ -6,13 +6,16 @@ using UnityEngine.UI;
 
 public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-   [SerializeField] private Card card;
+    [SerializeField] private Card card;
     [SerializeField] private SpriteRenderer spriteR;
-    [SerializeField] private Sprite img;
+    [SerializeField] public GameObject SupremeParent;
+    [SerializeField] private GameObject _MyMagnet;
+    [SerializeField] private bool _moving = false;
     private Deck deck;
     private float AuxiliaryZIndex;
-    void Start()
-    {
+
+    void Start(){
+        _MyMagnet = this.gameObject.transform.GetChild(0).gameObject;
     }
 
     public void Instantiate(int i){
@@ -31,7 +34,7 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("ON BEING DRAG");
+       // Debug.Log("ON BEING DRAG");
         AuxiliaryZIndex = transform.position.z;
         //throw new System.NotImplementedException();
     }
@@ -49,7 +52,19 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
     {
         Debug.Log("ON END DRAG");
         transform.position = new Vector3(transform.position.x, transform.position.y, AuxiliaryZIndex);
+        GameObject otherCardCollider = _MyMagnet.GetComponent<Magnet>().GetOtherCard();
+        if (otherCardCollider != null)
+        {
+            Debug.Log("i WANT TO JOIN THIS PILE");
+            GameObject otherCardParent = otherCardCollider.transform.parent.GetComponent<CardBehaviour>().SupremeParent;
+            otherCardParent.GetComponent<Pile>().AddCardToPilar(this.gameObject);
+        }else{ // the player dropped the card on an empty space. didnt put the card on top o any other card.
+            Transform parentTransform = this.gameObject.transform.parent;
+            this.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y-0.5f, parentTransform.position.z-0.03f);
+
+        }
     }
+
 
 
 }
