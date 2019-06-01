@@ -133,7 +133,7 @@ public bool clicked = false;
     }
 
     public Card Getcard(){return card;}
-
+/*
     //check the double click.
     // Clicking on “open” card in a column, will move to open ‘freecell’ if one is available
     // private void FixedUpdate()
@@ -160,8 +160,5 @@ public bool clicked = false;
 
     // }
 
-
-
-
-
+ */
 }
