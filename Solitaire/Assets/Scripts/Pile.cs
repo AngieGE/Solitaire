@@ -60,8 +60,10 @@ public abstract class Pile : MonoBehaviour
     private void EnableLastCardCollider()
     {
         Debug.Log("Enabling new card collider...");
-
-        _CardsInPile[_CardsInPile.Count-1].gameObject.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+        if (_CardsInPile.Count>0)
+        {
+         _CardsInPile[_CardsInPile.Count-1].gameObject.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;    
+        }
     }
 
     private void RemoveCardFromList(GameObject cardToRemove){

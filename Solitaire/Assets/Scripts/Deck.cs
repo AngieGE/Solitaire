@@ -17,6 +17,12 @@ public enum House{
     spades
 }
 
+public enum Color{
+    black =0,
+    red
+}
+
+
 public struct Card
 {
     public int value;
@@ -24,20 +30,22 @@ public struct Card
     public Sprite cardImage;
     public string cardImageName;
     public BoardSection boardSection;
-    public Card(int v, House h, string cn, BoardSection bs, Sprite ci)
+    public Color color;
+    public Card(int v, House h, string cn, BoardSection bs, Sprite ci, Color c)
     {
         value = v;
         house = h;
         cardImageName = cn;
         boardSection = bs;
         cardImage = ci;
+        color = c;
     }
 }
 public class Deck : MonoBehaviour
 {
     [SerializeField] private Card[] _Deck = new Card[52];
     [SerializeField] private GameObject[] _Tableau = new GameObject[8];
-    [SerializeField] private GameObject _CardDummy;
+    [SerializeField] private GameObject _CardDummy = null;
     [SerializeField] private Sprite[] sprites = new Sprite[52];
 
     private int CardsPerHouse = 13;
@@ -115,9 +123,9 @@ public class Deck : MonoBehaviour
         {
             for (int j = 0; j < Houses; j++)
             {
-                //val, house, name of png, board section
                 var name_png = i.ToString() + "_of_"+ (House)j;
-                _Deck[index] = new Card(i, (House)j, name_png, (BoardSection)0, sprites[index]);
+                Color c = ( (House)j == House.clubs || (House)j == House.spades)? (Color)0 : (Color)1; 
+                _Deck[index] = new Card(i, (House)j, name_png, (BoardSection)0, sprites[index], c);
                 index++;
             }
         }
