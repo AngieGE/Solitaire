@@ -24,7 +24,6 @@ public struct Card
     public Sprite cardImage;
     public string cardImageName;
     public BoardSection boardSection;
-
     public Card(int v, House h, string cn, BoardSection bs, Sprite ci)
     {
         value = v;
@@ -86,7 +85,7 @@ public class Deck : MonoBehaviour
             {                
                 tmpCard =Instantiate(_CardDummy, new Vector3(_Tableau[i].transform.position.x, _Tableau[i].transform.position.y - yoffset,  _Tableau[i].transform.position.z - zoffset), Quaternion.identity);//_Tableau[i].transform.position.x, _Tableau[i].transform.position.y+2,  _Tableau[i].transform.position.z) );
                 tmpCard.name = _Deck[index].cardImageName;
-                tmpCard.GetComponent<NewBehaviourScript>().Instantiate(index);
+               tmpCard.GetComponent<CardBehaviour>().Instantiate(index);
                 yoffset+=0.5f;
                 zoffset+=0.03f;
                 index++;
