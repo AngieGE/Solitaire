@@ -4,20 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using UnityEngine.Events;
+using static OpenCells;
 public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Card card;
     [SerializeField] private SpriteRenderer spriteR;
     [SerializeField] public GameObject SupremeParent;
     [SerializeField] private GameObject _MyMagnet;
+    [SerializeField] private UnityEvent _myEventOnCollision;
     private Deck deck;
     private float AuxiliaryZIndex;
     //this flag was created for the case when the player wants to drag multiple cards at a time
     // they are draggable if this flag is up. 
     //Always checking if it is draggale on update
     [SerializeField] private bool _IsDraggable = true;
-
+public bool clicked = false;
     void Start(){
         _MyMagnet = this.gameObject.transform.GetChild(0).gameObject;
     }
@@ -127,4 +129,35 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
     }
 
     public Card Getcard(){return card;}
+
+    //check the double click.
+    // Clicking on “open” card in a column, will move to open ‘freecell’ if one is available
+    // private void FixedUpdate()
+    // {
+    //     GameObject Availablecell = null;
+    //     if (Input.GetMouseButtonUp(0) && clicked == false){
+    //         Debug.Log("CLICK");
+    //         clicked = true;
+           
+    //     }
+    //     if(clicked){
+
+    //             foreach (var openCellGameObject in OpenCellsList)
+    //             {
+    //                 if(openCellGameObject.GetComponent<OpenCellBehaviour>().GetAvailability()){
+    //                     Availablecell = openCellGameObject.gameObject;
+    //                     break;
+    //                 }
+                    
+    //             }
+    //     ChangeCardOfPile(Availablecell.gameObject);
+    //     clicked = false;
+    //     }
+
+    // }
+
+
+
+
+
 }

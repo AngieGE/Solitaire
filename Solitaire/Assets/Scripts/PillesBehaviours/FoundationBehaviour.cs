@@ -6,7 +6,7 @@ public class FoundationBehaviour : Pile
 {
         [SerializeField] bool _FirstCard = true;
         [SerializeField] Card _CardToPlace;
-        [SerializeField] private House _PileHouse;
+        [SerializeField] private House _PileHouse = 0; //just a default value to avoid the warning...
 
     public override bool CheckValidMovement()
     {   //descard the card if the house doesnt match the pile

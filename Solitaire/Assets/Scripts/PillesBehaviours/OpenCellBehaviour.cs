@@ -30,6 +30,6 @@ public class OpenCellBehaviour : Pile
       
     }
 
-
+    public bool GetAvailability(){return _Available;}
 
 }
