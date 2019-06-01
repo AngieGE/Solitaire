@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pile : MonoBehaviour
+public abstract class Pile : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> _CardsInPile = new List<GameObject>();
+    [SerializeField] public List<GameObject> _CardsInPile = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +40,20 @@ public class Pile : MonoBehaviour
         _CardsInPile.Add(card);
     }
 
+    public void AddCardToPilar(GameObject cardDraged, GameObject pileManager){
+       Debug.Log("Adding card...");
+        //Add the card to this pillar
+        AddCardToPilar(cardDraged);
+        //remove the card from the ex cards pilar list
+        pileManager.GetComponent<Pile>().RemoveCardFromList(cardDraged);
+        //Enable the collider of the last card of the ex card's pilar
+        pileManager.GetComponent<Pile>().EnableLastCardCollider();
+
+    }
+
+    //force the child classes to implement this method
+    public abstract bool CheckValidMovement();
+
     public void RemoveCardFromPile(GameObject card){
 
     }
@@ -52,5 +66,17 @@ public class Pile : MonoBehaviour
     private void EnableCollider(GameObject obj)
     {
         obj.gameObject.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+    }
+
+    private void EnableLastCardCollider()
+    {
+        Debug.Log("Enabling new card collider...");
+
+        _CardsInPile[_CardsInPile.Count-1].gameObject.transform.GetChild(0).GetComponent<BoxCollider>().enabled = true;
+    }
+
+    private void RemoveCardFromList(GameObject cardToRemove){
+        Debug.Log("Removing from old pile...");
+        _CardsInPile.Remove(cardToRemove);
     }
 }

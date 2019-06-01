@@ -15,4 +15,9 @@ public class TableauBehaviour : Pile
     {
         
     }
+
+    public override bool CheckValidMovement()
+    {
+        return true;
+    }
 }

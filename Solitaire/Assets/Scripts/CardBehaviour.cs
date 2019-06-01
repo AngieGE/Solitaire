@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -27,16 +28,10 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
         spriteR.sprite = card.cardImage;
     }
 
-    private void OnMouseDown()
-    {
-        
-    }
-
     public void OnBeginDrag(PointerEventData eventData)
     {
        // Debug.Log("ON BEING DRAG");
         AuxiliaryZIndex = transform.position.z;
-        //throw new System.NotImplementedException();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -52,19 +47,41 @@ public class CardBehaviour : MonoBehaviour,  IBeginDragHandler, IDragHandler, IE
     {
         Debug.Log("ON END DRAG");
         transform.position = new Vector3(transform.position.x, transform.position.y, AuxiliaryZIndex);
-        GameObject otherCardCollider = _MyMagnet.GetComponent<Magnet>().GetOtherCard();
-        if (otherCardCollider != null)
-        {
-            Debug.Log("i WANT TO JOIN THIS PILE");
-            GameObject otherCardParent = otherCardCollider.transform.parent.GetComponent<CardBehaviour>().SupremeParent;
-            otherCardParent.GetComponent<Pile>().AddCardToPilar(this.gameObject);
-        }else{ // the player dropped the card on an empty space. didnt put the card on top o any other card.
-            Transform parentTransform = this.gameObject.transform.parent;
-            this.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y-0.5f, parentTransform.position.z-0.03f);
+         GameObject otherCardCollider = _MyMagnet.GetComponent<Magnet>().GetOtherCardCollider();
+         if (otherCardCollider != null)
+         {
+        //get the board section in order to call the metod that checks if the movement is valid
+            Card otherCard = _MyMagnet.GetComponent<Magnet>().GetOtherCard();
+            GameObject otherCardPileManager = _MyMagnet.GetComponent<Magnet>().GetOtherCardPileManager();
 
+             bool validMovement=false;
+            switch (otherCard.boardSection)
+            {
+                case BoardSection.Foundation:
+                //otherCardPileManager.GetComponent<>
+                break;
+                case BoardSection.OpenCell:
+                break;
+                case BoardSection.Tableau:
+                    validMovement = otherCardPileManager.GetComponent<TableauBehaviour>().CheckValidMovement();
+                break;
+                default:
+                break;
+            }
+           if (validMovement) ChangeCardOfPile(otherCardPileManager);
+
+        }else{ // the player dropped the card on an empty space. didnt put the card on top of any other card.
+        //return the card back to its original pile
+             Transform parentTransform = this.gameObject.transform.parent;
+             this.transform.position = new Vector3(parentTransform.position.x, parentTransform.position.y-0.5f, parentTransform.position.z-0.03f);
         }
     }
 
+    private void ChangeCardOfPile(GameObject otherCardPileManager)
+    {
+        Debug.Log("i WANT TO JOIN THIS PILE");
+        otherCardPileManager.GetComponent<Pile>().AddCardToPilar(this.gameObject, SupremeParent);    
+    }
 
-
+    public Card Getcard(){return card;}
 }

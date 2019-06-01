@@ -6,41 +6,33 @@ public class Magnet : MonoBehaviour
 {
     [SerializeField] private bool _IsClicking = false;
     //quiero guardar la carta con la que collisiono
-    [SerializeField] private GameObject othercard;
-    //[SerializeField]  private Card _thisCard;
-   //  [SerializeField]  private GameObject _MySupremeParent;
-    private void Start()
-    {
-       // _thisCard =  this.gameObject.transform.parent.gameObject.GetComponent<CardBehaviour>().SupremeParent;
-      // _MySupremeParent = this.gameObject.transform.parent.gameObject.GetComponent<CardBehaviour>().SupremeParent;
-    }
+    [SerializeField] private GameObject _OtherCardDCollider = null;
+
 
     private void OnCollisionEnter(Collision other)
     {
       Debug.Log("Two decks collided");
         GameObject theOtherSupremeParent =  other.gameObject.transform.parent.gameObject.GetComponent<CardBehaviour>().SupremeParent;
     //    if (_MySupremeParent != theOtherSupremeParent) { }
-        othercard = other.gameObject;
+        _OtherCardDCollider = other.gameObject;
 
     }
     private void OnCollisionExit(Collision other)
     {
         Debug.Log("eXIT COL");
-                othercard = null;
-    }
-    private void OnMouseUp() //called when mouse released after dragging
-    {
-        Debug.Log("Finished Dragging");
-        _IsClicking = false;
-    }
-    
-    private void OnMouseDown() //called when mouse clock for dragging
-    {
-        Debug.Log("Finished Dragging");
-        _IsClicking=true;
+        _OtherCardDCollider = null;
     }
 
+public GameObject GetOtherCardCollider(){ return _OtherCardDCollider;}
 
-public GameObject GetOtherCard(){ return othercard;}
+
+//call only when _OtherCardDCollider != null
+ public Card GetOtherCard(){
+    return _OtherCardDCollider.transform.parent.gameObject.GetComponent<CardBehaviour>().Getcard();
+ }
+
+public GameObject GetOtherCardPileManager(){ 
+    return _OtherCardDCollider?.transform.parent.gameObject.GetComponent<CardBehaviour>().SupremeParent;
+}
     //si la colision es de distintos padres y el left click no esta presionado
 }
